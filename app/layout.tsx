@@ -1,9 +1,9 @@
 import Header from "@/components/header";
-import Provider from "@/components/provider";
-import { Container, CssBaseline } from "@mui/material";
+import ThemeProvider from "@/components/provider";
+import { Toaster } from "@/components/ui/toaster";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { getAuth } from "./action";
+import { getMe } from "./action";
 import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,17 +17,17 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const auth = await getAuth();
+	const auth = await getMe();
 	return (
 		<html lang="en">
 			<body className={inter.className}>
-				<Provider authentication={auth}>
-						<Header />
-					<Container>
+				<main className="w-full  max-w-[1200px] mx-auto ">
+					<ThemeProvider>
+						<Header auth={auth} />
 						{children}
-					</Container>
-					<CssBaseline />
-				</Provider>
+						<Toaster />
+					</ThemeProvider>
+				</main>
 			</body>
 		</html>
 	);

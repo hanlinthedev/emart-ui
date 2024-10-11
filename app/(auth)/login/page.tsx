@@ -1,37 +1,91 @@
 "use client";
-import { Button, Link, Stack, TextField } from "@mui/material";
-import NextLink from "next/link";
-import { useFormState } from "react-dom";
+import CustomFormField from "@/components/custom-form";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CircleBackslashIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { login } from "../action";
 
 type Props = {};
 
 const Login = (props: Props) => {
-	const [state, formAction] = useFormState(login, {
-		error: null,
+	const [isLoading, setIsLoading] = useState(false);
+	const router = useRouter();
+	const { toast } = useToast();
+	const formSchema = z.object({
+		email: z.string().min(2, {
+			message: "Email is required",
+		}),
+		password: z.string().min(1, {
+			message: "Password is required",
+		}),
 	});
+	const form = useForm<z.infer<typeof formSchema>>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			email: "",
+			password: "",
+		},
+	});
+	const redirectRoute = useSearchParams().get("redirect");
+
+	const onSubmit = async (data: z.infer<typeof formSchema>) => {
+		const formData = new FormData();
+		formData.append("email", data.email);
+		formData.append("password", data.password);
+		try {
+			setIsLoading(true);
+			const res = await login(formData);
+			if (res?.error) {
+				toast({
+					title: "Error",
+					description:
+						res.error.message || res.error.email || res.error.password,
+				});
+				setIsLoading(false);
+				return;
+			}
+			form.reset();
+			if (redirectRoute) {
+				router.replace(redirectRoute);
+			} else {
+				router.replace("/");
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
-		<form action={formAction} className="w-full max-w-xs">
-			<Stack spacing={2}>
-				{state?.error?.message && (
-					<div className="text-red-500">{state?.error?.message}</div>
-				)}
-				<TextField name="email" label="Email" variant="outlined" type="email" />
-				<TextField
+		<Form {...form}>
+			<form
+				onSubmit={form.handleSubmit(onSubmit)}
+				className="space-y-4 w-full max-w-xs"
+			>
+				<CustomFormField form={form} name="email" placeholder="Email" />
+				<CustomFormField
+					form={form}
 					name="password"
-					label="Password"
-					variant="outlined"
+					placeholder="Password"
 					type="password"
 				/>
-				<Button type="submit" variant="contained">
-					Login
+				<Button type="submit" className="w-full" disabled={isLoading}>
+					{isLoading ? <CircleBackslashIcon /> : "Log In"}
 				</Button>
-				<Link component={NextLink} href="/signup" className="self-center">
-					Signup
-				</Link>
-			</Stack>
-		</form>
+				<div className="flex justify-center">
+					<Link href="/signup">
+						Do not have an account yet?{""}
+						<span className="underline">Sign Up</span>
+					</Link>
+				</div>
+			</form>
+		</Form>
 	);
 };
-
 export default Login;

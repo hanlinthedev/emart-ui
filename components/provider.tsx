@@ -1,25 +1,12 @@
 "use client";
 
-import darkTheme from "@/app/dark.theme";
-import { AuthContext } from "@/context/auth-context";
-import { ThemeProvider } from "@emotion/react";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
+import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { ReactNode } from "react";
 
-export default function Provider({
-	children,
-	authentication,
-}: {
-	children: ReactNode[];
-	authentication: any;
-}) {
+export default function ThemeProvider({ children }: { children: ReactNode[] }) {
 	return (
-		<AppRouterCacheProvider>
-			<ThemeProvider theme={darkTheme}>
-				<AuthContext.Provider value={authentication}>
-					{children}
-				</AuthContext.Provider>
-			</ThemeProvider>
-		</AppRouterCacheProvider>
+		<NextThemesProvider attribute="class" defaultTheme="system" enableSystem>
+			{children}
+		</NextThemesProvider>
 	);
 }

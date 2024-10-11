@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getAuth } from "./app/action";
+const publicRoutes = ["/login", "/signup", "/"];
+const adminRoutes = ["/admin"];
 
-const publicRoutes = ["/login", "/signup"];
+export const middleware = async (request: NextRequest) => {
+	const me = await getAuth();
 
-export const middleware = (request: NextRequest) => {
 	const token = request.cookies.get("Authentication");
+	const isAdmin = me ? me.isAdmin : false;
+	if (
+		!isAdmin &&
+		adminRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
+	) {
+		return NextResponse.redirect(new URL("/fsdf", request.url));
+	}
 	if (
 		!token &&
 		!publicRoutes.some((route) => request.nextUrl.pathname.startsWith(route))

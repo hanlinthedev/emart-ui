@@ -1,7 +1,8 @@
-import { getMe } from "./action";
+import { redirect } from "next/navigation";
 
-export default async function Home() {
-	const me = await getMe();
-	console.log(me);
-	return <div className="min-h-screen">s</div>;
-}
+const page = () => {
+	redirect("/page/1");
+	return null;
+};
+
+export default page;

@@ -1,47 +1,109 @@
 "use client";
-import { Alert, Button, Link, Stack, TextField } from "@mui/material";
-import NextLink from "next/link";
-import { useFormState } from "react-dom";
+import CustomFormField from "@/components/custom-form";
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { useToast } from "@/hooks/use-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CircleBackslashIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 import { signup } from "../action";
+type Props = {};
 
-export default function Signup() {
-	const [state, formAction] = useFormState(signup, {
-		error: {},
+const Login = (props: Props) => {
+	const [isLoading, setIsLoading] = useState(false);
+	const router = useRouter();
+	const { toast } = useToast();
+	const formSchema = z
+		.object({
+			username: z.string().min(3, {
+				message: "Username is required",
+			}),
+			email: z.string().min(2, {
+				message: "Email is required",
+			}),
+			password: z.string().min(8, {
+				message: "Password is required",
+			}),
+			confirmPassword: z.string().min(8, {
+				message: "Confirm password is required",
+			}),
+		})
+		.refine((data) => data.password === data.confirmPassword, {
+			message: "Passwords don't match",
+			path: ["confirmPassword"],
+		});
+
+	const form = useForm<z.infer<typeof formSchema>>({
+		resolver: zodResolver(formSchema),
+		defaultValues: {
+			username: "",
+			email: "",
+			password: "",
+			confirmPassword: "",
+		},
 	});
+
+	const onSubmit = async (data: z.infer<typeof formSchema>) => {
+		const formData = new FormData();
+		formData.append("email", data.email);
+		formData.append("password", data.password);
+		formData.append("name", data.username);
+		try {
+			setIsLoading(true);
+			const res = await signup(formData);
+			if (res?.error) {
+				toast({
+					title: "Error",
+					description:
+						res.error.message ||
+						res.error.name ||
+						res.error.eamil ||
+						res.error.password,
+				});
+				setIsLoading(false);
+				return;
+			}
+			form.reset();
+			router.replace("/");
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
 	return (
-		<form action={formAction} className="w-full max-w-xs">
-			<Stack spacing={2}>
-			{state?.error?.message &&	<Alert  severity="error">{state?.error?.message}</Alert>}
-				<TextField
-					name="email"
-					label="Email"
-					variant="outlined"
-					type="email"
-					error={!!state.error.email}
-					helperText={state?.error?.email}
-				/>
-				<TextField
-					name="name"
-					label="Username"
-					variant="outlined"
-					error={!!state.error.name}
-					helperText={state?.error?.name}
-				/>
-				<TextField
+		<Form {...form}>
+			<form
+				onSubmit={form.handleSubmit(onSubmit)}
+				className="space-y-4 w-full max-w-xs"
+			>
+				<CustomFormField form={form} name="username" placeholder="Username" />
+				<CustomFormField form={form} name="email" placeholder="Email" />
+				<CustomFormField
+					form={form}
 					name="password"
-					label="Password"
-					variant="outlined"
+					placeholder="Password"
 					type="password"
-					error={!!state.error.password}
-					helperText={state?.error?.password}
 				/>
-				<Button type="submit" variant="contained">
-					Signup
+				<CustomFormField
+					form={form}
+					name="confirmPassword"
+					placeholder="Confirm Password"
+					type="password"
+				/>
+				<Button type="submit" className="w-full" disabled={isLoading}>
+					{isLoading ? <CircleBackslashIcon /> : "Sign Up"}
 				</Button>
-				<Link component={NextLink} href="/login" className="self-center">
-					Login
-				</Link>
-			</Stack>
-		</form>
+				<div className="flex justify-center">
+					<Link href="/login">
+						Already havev an account? <span className="underline">Log In</span>
+					</Link>
+				</div>
+			</form>
+		</Form>
 	);
-}
+};
+export default Login;

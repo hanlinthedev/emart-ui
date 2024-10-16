@@ -17,11 +17,13 @@ const CustomPagination = ({
 	total: number;
 	currentPage: number;
 }) => {
-	const totalPage = Math.ceil(total / 10);
+	const totalPage = Math.ceil(total / 20);
 	const router = useRouter();
 
 	const paginationArray =
-		currentPage < 3
+		totalPage < 5
+			? Array.from({ length: totalPage }, (_, i) => i + 1)
+			: currentPage < 3
 			? [1, 2, 3, 4, 5]
 			: currentPage > totalPage - 2
 			? [totalPage - 4, totalPage - 3, totalPage - 2, totalPage - 1, totalPage]
@@ -58,18 +60,19 @@ const CustomPagination = ({
 					</PaginationItem>
 				))}
 
-				{currentPage < totalPage - 2 && (
-					<>
-						<PaginationItem>
-							<PaginationEllipsis />
-						</PaginationItem>
-						<PaginationItem>
-							<PaginationLink href={`/page/${totalPage}`}>
-								{totalPage}
-							</PaginationLink>
-						</PaginationItem>
-					</>
-				)}
+				{currentPage < totalPage - 2 ||
+					(paginationArray[paginationArray.length - 1] !== totalPage && (
+						<>
+							<PaginationItem>
+								<PaginationEllipsis />
+							</PaginationItem>
+							<PaginationItem>
+								<PaginationLink href={`/page/${totalPage}`}>
+									{totalPage}
+								</PaginationLink>
+							</PaginationItem>
+						</>
+					))}
 				<PaginationItem>
 					<PaginationNext
 						className={

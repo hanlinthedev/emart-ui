@@ -12,7 +12,7 @@ export const middleware = async (request: NextRequest) => {
 		!isAdmin &&
 		adminRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
 	) {
-		return NextResponse.redirect(new URL("/fsdf", request.url));
+		return NextResponse.redirect(new URL("/", request.url));
 	}
 	if (
 		!token &&

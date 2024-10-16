@@ -1,9 +1,8 @@
 "use client";
-import { getAuth } from "@/app/action";
-import { setProductReview } from "@/app/product/action";
-import { useToast } from "@/hooks/use-toast";
+import { getAuth, setProductReview } from "@/app/action";
+import { useSubmit } from "@/hooks/useSubmit";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import CustomFormField from "./custom-form";
@@ -17,8 +16,8 @@ type Props = {
 
 const ReviewForm = ({ productId }: Props) => {
 	const user = getAuth();
-	const { toast } = useToast();
-	const router = useRouter();
+
+	const path = usePathname();
 	const formSchema = z.object({
 		comment: z.string(),
 		rating: z.number().min(1).max(5),
@@ -34,36 +33,21 @@ const ReviewForm = ({ productId }: Props) => {
 	const handleRatingChange = (newRating: number) => {
 		form.setValue("rating", newRating);
 	};
-	const path = usePathname();
 
-	const onSubmit = async (data: z.infer<typeof formSchema>) => {
-		const user = await getAuth();
-		if (!user) {
-			router.push(`/login?redirect=${path}`);
-			return;
-		}
-
-		const formBody = {
-			...data,
-			productId: productId,
-			userId: user?.id as string,
-		};
-		const res = await setProductReview(formBody, path);
-		if (res.error) {
-			toast({
-				description: "Failed",
-				variant: "destructive",
-			});
-		} else {
+	const { handleSubmit, loading } = useSubmit(setProductReview);
+	const submitReview = async (data: z.infer<typeof formSchema>) => {
+		const res = await handleSubmit({ ...data, productId });
+		if (!res.error) {
 			form.reset();
-			toast({
-				description: "Success",
-			});
 		}
 	};
+
 	return (
 		<Form {...form}>
-			<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-5 ">
+			<form
+				onSubmit={form.handleSubmit((data) => submitReview(data))}
+				className="space-y-4 py-5 "
+			>
 				<CustomFormField form={form} name="comment" placeholder="Comment" />
 				<div className="flex items-center justify-between space-x-2">
 					<FormField

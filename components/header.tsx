@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { CurrentUser } from "@/lib/type";
-import { BackpackIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
+import CartComponent from "./CartComponent";
 import { ModeToggle } from "./modeToggle";
 import Setting from "./setting";
 
 const Header = ({ auth }: { auth: CurrentUser }) => {
 	return (
-		<nav className=" py-2 w-full flex justify-between items-center px-2 sm:px-4">
+		<nav className=" py-3 w-full flex justify-between items-center px-2 sm:px-4">
 			<div>
 				<h1 className="text-4xl italic">eMart</h1>
 			</div>
@@ -15,9 +15,7 @@ const Header = ({ auth }: { auth: CurrentUser }) => {
 				<ModeToggle rounded={auth?.id ? true : false} />
 				{auth.id ? (
 					<div className="flex items-center gap-2">
-						<Button variant="outline" size={"icon"} className="rounded-full ">
-							<BackpackIcon className="h-[1.2rem]   w-[1.2rem]  " />
-						</Button>
+						<CartComponent />
 						<Setting auth={auth} />
 					</div>
 				) : (

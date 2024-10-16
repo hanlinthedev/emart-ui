@@ -1,3 +1,5 @@
+import { getProductById } from "@/app/action";
+import AddToCart from "@/components/AddToCart";
 import ProductReview from "@/components/product-review";
 import ReviewForm from "@/components/ReviewForm";
 import StarRating from "@/components/star-rating";
@@ -7,7 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { API_URL } from "@/constants";
 import { Product } from "@/lib/type";
 import Image from "next/image";
-import { getProductById } from "../action";
 
 type Props = {};
 
@@ -30,7 +31,7 @@ const page = async ({
 		data.reviews.reduce((total, current) => total + current.rating, 0) /
 		data.reviews.length;
 	return (
-		<div className="p-6 grid grid-cols-1 sm:grid-cols-2">
+		<div className="p-6 pb-8 grid grid-cols-1 sm:grid-cols-2 min-h-[calc(100vh-32px)] ">
 			<div className="py-3">
 				<AspectRatio ratio={16 / 9}>
 					<Image
@@ -42,7 +43,7 @@ const page = async ({
 					/>
 				</AspectRatio>
 			</div>
-			<div className="flex flex-col gap-4">
+			<div className="flex flex-col gap-4 relative h-full">
 				<h1 className="text-3xl font-bold">{data.name}</h1>
 				<div className="flex flex-col gap-2">
 					<div className="flex items-center gap-4 justify-start">
@@ -82,6 +83,7 @@ const page = async ({
 						</div>
 					</TabsContent>
 				</Tabs>
+				<AddToCart productId={data.id} price={data.price} stock={data.stock} />
 			</div>
 		</div>
 	);

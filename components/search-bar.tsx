@@ -1,5 +1,5 @@
 "use client";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { Cross1Icon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Button } from "./ui/button";
@@ -15,26 +15,40 @@ const SearchBar = (props: Props) => {
 		router.push(`?q=${q}`);
 	};
 	return (
-		<div className="relative w-full sm:w-80 flex items-center  gap-2">
-			<Input
-				placeholder="Search..."
-				onChange={(e) => setQ(e.target.value)}
-				value={q}
-			/>
-			<Button
-				onClick={handleQuery}
-				variant="ghost"
-				className="absolute right-0 hidden sm:block"
-			>
-				<MagnifyingGlassIcon />
-			</Button>
-			<Button
-				onClick={handleQuery}
-				variant="secondary"
-				className=" block sm:hidden"
-			>
-				<MagnifyingGlassIcon />
-			</Button>
+		<div className="flex items-center gap-2 w-full sm:w-80 ">
+			<div className="relative w-full flex items-center  gap-2">
+				<Input
+					placeholder="Search..."
+					onChange={(e) => setQ(e.target.value)}
+					value={q}
+				/>
+				<Button
+					onClick={handleQuery}
+					variant="ghost"
+					className="absolute right-0 hidden sm:block"
+				>
+					<MagnifyingGlassIcon />
+				</Button>
+				<Button
+					onClick={handleQuery}
+					variant="secondary"
+					className=" block sm:hidden"
+				>
+					<MagnifyingGlassIcon />
+				</Button>
+			</div>
+			{query && (
+				<Button
+					variant="secondary"
+					size={"icon"}
+					onClick={() => {
+						setQ("");
+						router.push("/page/1");
+					}}
+				>
+					<Cross1Icon />
+				</Button>
+			)}
 		</div>
 	);
 };

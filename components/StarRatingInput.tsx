@@ -65,4 +65,6 @@ const StarRatingInput: React.FC<StarRatingProps> = forwardRef<
 	);
 });
 
+StarRatingInput.displayName = "StarRatingInput";
+
 export default StarRatingInput;

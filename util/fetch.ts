@@ -6,17 +6,30 @@ const getHeaders = () => ({
 });
 
 export const post = async (path: string, body: any) => {
-	const res = await fetch(`${API_URL}/${path}`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-			...getHeaders(),
-		},
-		body: JSON.stringify(body),
-	});
-	return {
-		error: null,
-	};
+	try {
+		const res = await fetch(`${API_URL}/${path}`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+				...getHeaders(),
+			},
+			body: JSON.stringify(body),
+		});
+
+		if (!res.ok) {
+			return {
+				error: "Something went wrong",
+			};
+		}
+		return {
+			error: null,
+		};
+	} catch (error) {
+		console.log(error);
+		return {
+			error: "Something went wrong",
+		};
+	}
 };
 
 export const get = async (path: string) => {

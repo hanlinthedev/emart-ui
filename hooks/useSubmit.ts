@@ -37,6 +37,7 @@ export const useSubmit = (
 					description: res.error,
 					variant: "destructive",
 				});
+				setLoading(false);
 				return { error: res.error };
 			} else {
 				toast({
@@ -44,6 +45,7 @@ export const useSubmit = (
 					description: "Operation successful",
 				});
 				revalidate(path);
+				setLoading(false);
 				return { error: null };
 			}
 		} catch (error) {
@@ -52,6 +54,7 @@ export const useSubmit = (
 				description: "An unexpected error occurred",
 				variant: "destructive",
 			});
+			setLoading(false);
 			return { error: "An unexpected error occurred" };
 		}
 

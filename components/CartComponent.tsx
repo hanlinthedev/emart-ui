@@ -4,10 +4,13 @@ import { useEventSource } from "@/hooks/useEventSource";
 import { ShoppingCart } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-type Props = {};
+import Link from 'next/link';
+type Props = {
+	cartItemsCount: number;
+};
 
-const CartComponent = (props: Props) => {
-	const [cartCount, setCartCount] = useState(0);
+const CartComponent = ({ cartItemsCount }: Props) => {
+	const [cartCount, setCartCount] = useState(cartItemsCount);
 	const { data } = useEventSource();
 	useEffect(() => {
 		if (data?.event === "cartCount") {
@@ -15,7 +18,7 @@ const CartComponent = (props: Props) => {
 		}
 	}, [data]);
 	return (
-		<div className="relative">
+		<Link href="/cart" className="relative">
 			{cartCount > 0 && (
 				<Badge
 					className="absolute -top-[25%] -right-[25%]"
@@ -27,7 +30,7 @@ const CartComponent = (props: Props) => {
 			<Button variant="outline" size={"icon"} className="rounded-full ">
 				<ShoppingCart className="h-[1.2rem]   w-[1.2rem]" />
 			</Button>
-		</div>
+		</Link>
 	);
 };
 

@@ -15,7 +15,7 @@ const Header = ({ auth }: { auth: CurrentUser }) => {
 				<ModeToggle rounded={auth?.id ? true : false} />
 				{auth.id ? (
 					<div className="flex items-center gap-2">
-						<CartComponent />
+						<CartComponent cartItemsCount={auth.cartCount} />
 						<Setting auth={auth} />
 					</div>
 				) : (

@@ -4,6 +4,7 @@ export interface CurrentUser {
 	email: string;
 	isAdmin: boolean;
 	avatar: string | null;
+	cartCount: number;
 }
 
 export interface Category {
@@ -34,4 +35,16 @@ export interface Product {
 	category: Category;
 	views: number;
 	reviews: Review[];
+}
+
+export interface CartItem {
+	id: string;
+	product: {
+		id: string;
+		name: string;
+		price: number;
+		image: string;
+	};
+	quantity: number;
+	subTotal: number;
 }

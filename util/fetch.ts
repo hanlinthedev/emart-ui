@@ -17,6 +17,7 @@ export const post = async (path: string, body: any) => {
 		});
 
 		if (!res.ok) {
+			console.log(await res.json());
 			return {
 				error: "Something went wrong",
 			};

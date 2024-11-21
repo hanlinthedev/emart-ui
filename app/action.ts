@@ -1,5 +1,6 @@
 "use server";
 
+import { API_URL } from "@/constants";
 import { Review } from "@/lib/type";
 import { get, post } from "@/util/fetch";
 import { jwtDecode } from "jwt-decode";
@@ -78,6 +79,49 @@ export const addToCart = async (body: {
 	return {
 		error: null,
 	};
+};
+
+export const getCartItems = async () => {
+	return await get("cart");
+};
+
+export const removeItemFromCart = async (id: string) => {
+	const res = await post(`cart/${id}`, {});
+	if (res.error) {
+		return { error: res.error };
+	}
+	revalidatePath("/cart");
+	return {
+		error: null,
+	};
+};
+
+export const checkoutWithStripe = async (data: any) => {
+	const res = await fetch(`${API_URL}/checkout/session`, {
+		method: "POST",
+		body: JSON.stringify(data),
+		headers: {
+			"Content-Type": "application/json",
+			Cookie: cookies().toString(),
+		},
+	});
+	return res.json();
+};
+
+export const checkoutCart = async (data: any) => {
+	const body = {
+		paymentMethod: data.get("paymentMethod"),
+		productList: JSON.parse(data.get("productsList")),
+	};
+
+	const res = await post(`checkout`, body);
+	if (res.error) {
+		return { error: res.error };
+	}
+	return {
+		error: null,
+	};
+	return data;
 };
 
 export const revalidate = (path: string) => {

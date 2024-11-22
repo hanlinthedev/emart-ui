@@ -5,6 +5,11 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import * as React from "react";
 
+interface ExtendedDialogContentProps
+	extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
+	showOverlay?: boolean;
+}
+
 const Dialog = DialogPrimitive.Root;
 
 const DialogTrigger = DialogPrimitive.Trigger;
@@ -30,7 +35,7 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
 const DialogContent = React.forwardRef<
 	React.ElementRef<typeof DialogPrimitive.Content>,
-	React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+	ExtendedDialogContentProps
 >(({ className, children, showOverlay = true, ...props }, ref) => (
 	<DialogPortal>
 		{showOverlay && <DialogOverlay />}

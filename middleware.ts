@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAuth } from "./app/action";
 const publicRoutes = ["/login", "/signup", "/"];
+const privateRoutes = ["/cart", "/order"];
 const adminRoutes = ["/admin"];
 
 export const middleware = async (request: NextRequest) => {
@@ -13,6 +14,12 @@ export const middleware = async (request: NextRequest) => {
 		adminRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
 	) {
 		return NextResponse.redirect(new URL("/", request.url));
+	}
+	if (
+		!token &&
+		privateRoutes.some((route) => request.nextUrl.pathname.startsWith(route))
+	) {
+		return NextResponse.redirect(new URL("/login", request.url));
 	}
 	if (
 		!token &&

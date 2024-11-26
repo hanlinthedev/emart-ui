@@ -12,7 +12,7 @@ export function generateStaticParams() {
 	const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 	return pages.map((page) => ({ page: page.toString() }));
 }
-
+export const dynamic = "force-static";
 export default async function Home({
 	params: { page },
 	searchParams: { q, category },

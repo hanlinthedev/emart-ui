@@ -2,16 +2,17 @@
 import { Badge } from "@/components/ui/badge";
 import { useEventSource } from "@/hooks/useEventSource";
 import { ShoppingCart } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import Link from 'next/link';
 type Props = {
 	cartItemsCount: number;
+	cookies: any;
 };
 
-const CartComponent = ({ cartItemsCount }: Props) => {
+const CartComponent = ({ cartItemsCount, cookies }: Props) => {
 	const [cartCount, setCartCount] = useState(cartItemsCount);
-	const { data } = useEventSource();
+	const { data } = useEventSource(cookies);
 	useEffect(() => {
 		if (data?.event === "cartCount") {
 			setCartCount(data.cartCount);

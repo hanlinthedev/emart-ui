@@ -1,19 +1,25 @@
 import { API_URL } from "@/constants";
+import { EventSourcePolyfill } from "event-source-polyfill";
 import { useEffect, useState } from "react";
-
 export const useEventSource = () => {
 	const [data, setData] = useState<any>(null);
 	useEffect(() => {
 		if (typeof window !== "undefined") {
-			const eventSource = new EventSource(API_URL + "/cart/sse", {
+			const eventSource = new EventSourcePolyfill(`${API_URL}/cart/sse`, {
 				withCredentials: true, // Include credentials if needed
+				headers: {
+					"Content-Type": "text/event-stream",
+					"Cache-Control": "no-cache",
+					Connection: "keep-alive",
+					Authetication: document.cookie,
+				},
 			});
 
 			eventSource.onopen = () => {
 				console.log("SSE connection opened");
 			};
 
-			eventSource.onerror = (error) => {
+			eventSource.onerror = (error: any) => {
 				console.error("SSE connection error:", error);
 			};
 

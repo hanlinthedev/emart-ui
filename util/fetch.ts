@@ -41,3 +41,8 @@ export const get = async (path: string) => {
 	});
 	return res.json();
 };
+
+export const getWithoutHeaders = async (path: string) => {
+	const res = await fetch(`${API_URL}/${path}`);
+	return res.json();
+};

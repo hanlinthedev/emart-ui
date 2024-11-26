@@ -2,7 +2,7 @@
 
 import { API_URL } from "@/constants";
 import { Review } from "@/lib/type";
-import { get, post } from "@/util/fetch";
+import { get, getWithoutHeaders, post } from "@/util/fetch";
 import { jwtDecode } from "jwt-decode";
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
@@ -26,22 +26,22 @@ export const getProducts = async (
 	q: string,
 	category: string
 ) => {
-	return get(`product?page=${page}&q=${q}&category=${category}`);
+	return getWithoutHeaders(`product?page=${page}&q=${q}&category=${category}`);
 };
 
 export const getTotalProducts = async (
 	q: string | undefined = undefined,
 	category: string | undefined = undefined
 ) => {
-	return get(`product/total?q=${q}&category=${category}`);
+	return getWithoutHeaders(`product/total?q=${q}&category=${category}`);
 };
 
 export const getProductById = (id: string) => {
-	return get(`product/${id}`);
+	return getWithoutHeaders(`product/${id}`);
 };
 
 export const getCategories = () => {
-	return get("category");
+	return getWithoutHeaders("category");
 };
 
 export const setProductReview = async (review: Partial<Review>) => {

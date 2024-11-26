@@ -20,11 +20,10 @@ export default async function Home({
 	params: { page: string };
 	searchParams: { q: string; category: string };
 }) {
-	console.log(page, q, category);
 	const totalProducts = await getTotalProducts(q, category);
-	console.log("totalProduct", totalProducts);
+
 	const data: Product[] = await getProducts(page, q, category);
-	console.log("data", data);
+
 	const products = data?.map((product) => {
 		const total = product.reviews.reduce(
 			(init, current) => init + current.rating,
@@ -32,9 +31,9 @@ export default async function Home({
 		);
 		return { ...product, rating: total / product.reviews.length };
 	});
-	console.log("products", products);
+
 	const categories = await getCategories();
-	console.log("categories", categories);
+
 	return (
 		<div className="min-h-screen ">
 			<div className="flex flex-col sm:flex-row-reverse gap-2 justify-between p-4">

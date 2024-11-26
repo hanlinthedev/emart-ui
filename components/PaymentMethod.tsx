@@ -25,7 +25,7 @@ const PaymentMethod = ({ productsList }: Props) => {
 			productList: JSON.parse(productsList),
 			paymentMethod,
 		});
-		console.log(session);
+		console.log("session", session);
 		if (
 			session.message ===
 			"The Checkout Session's total amount due must add up to at least $0.50 usd"
@@ -39,6 +39,7 @@ const PaymentMethod = ({ productsList }: Props) => {
 			return;
 		}
 		const stripe = await getStripe();
+		console.log("stripe", stripe);
 		await stripe?.redirectToCheckout({
 			sessionId: session.id,
 		});

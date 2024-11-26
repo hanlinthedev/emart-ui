@@ -1,10 +1,11 @@
+import { API_URL } from "@/constants";
 import { useEffect, useState } from "react";
 
 export const useEventSource = () => {
 	const [data, setData] = useState<any>(null);
 	useEffect(() => {
 		if (typeof window !== "undefined") {
-			const eventSource = new EventSource("http://localhost:3001/cart/sse", {
+			const eventSource = new EventSource(API_URL + "/cart/sse", {
 				withCredentials: true, // Include credentials if needed
 			});
 

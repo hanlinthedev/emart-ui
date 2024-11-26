@@ -1,5 +1,6 @@
 import { API_URL } from "@/constants";
 import { EventSourcePolyfill } from "event-source-polyfill";
+import { cookies } from "next/headers";
 import { useEffect, useState } from "react";
 export const useEventSource = () => {
 	const [data, setData] = useState<any>(null);
@@ -11,7 +12,7 @@ export const useEventSource = () => {
 					"Content-Type": "text/event-stream",
 					"Cache-Control": "no-cache",
 					Connection: "keep-alive",
-					Authetication: document.cookie,
+					Cookie: cookies().toString(),
 				},
 			});
 

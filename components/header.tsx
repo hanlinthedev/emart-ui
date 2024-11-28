@@ -5,7 +5,7 @@ import CartComponent from "./CartComponent";
 import { ModeToggle } from "./modeToggle";
 import Setting from "./setting";
 
-const Header = ({ auth, cookies }: { auth: CurrentUser; cookies: any }) => {
+const Header = ({ auth }: { auth: CurrentUser }) => {
 	return (
 		<nav className=" py-3 w-full flex justify-between items-center px-2 sm:px-4">
 			<div>
@@ -15,7 +15,7 @@ const Header = ({ auth, cookies }: { auth: CurrentUser; cookies: any }) => {
 				<ModeToggle rounded={auth?.id ? true : false} />
 				{auth.id ? (
 					<div className="flex items-center gap-2">
-						<CartComponent cartItemsCount={auth.cartCount} cookies={cookies} />
+						<CartComponent cartItemsCount={auth.cartCount} />
 						<Setting auth={auth} />
 					</div>
 				) : (

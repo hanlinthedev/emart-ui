@@ -11,6 +11,12 @@ export const getMe = async () => {
 	return get("users/me");
 };
 
+export const getAuthentication = async () => {
+	const cookie = cookies().get("Authentication")?.value;
+	if (!cookie) return null;
+	return cookie;
+};
+
 export const getAuth = () => {
 	const cookie = cookies().get("Authentication")?.value;
 	if (!cookie) return null;
@@ -122,6 +128,10 @@ export const checkoutCart = async (data: any) => {
 		error: null,
 	};
 	return data;
+};
+
+export const getCartCount = async () => {
+	return get("cart/cartCount");
 };
 
 export const revalidate = (path: string) => {

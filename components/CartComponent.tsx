@@ -1,23 +1,36 @@
 "use client";
+import { getAuthentication, getCartCount } from "@/app/action";
 import { Badge } from "@/components/ui/badge";
-import { useEventSource } from "@/hooks/useEventSource";
+import { API_URL } from "@/constants";
 import { ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { io, Socket } from "socket.io-client";
 import { Button } from "./ui/button";
 type Props = {
 	cartItemsCount: number;
-	cookies: any;
 };
 
-const CartComponent = ({ cartItemsCount, cookies }: Props) => {
+const CartComponent = ({ cartItemsCount }: Props) => {
 	const [cartCount, setCartCount] = useState(cartItemsCount);
-	const { data } = useEventSource(cookies);
 	useEffect(() => {
-		if (data?.event === "cartCount") {
-			setCartCount(data.cartCount);
-		}
-	}, [data]);
+		let socket: Socket;
+		(async () => {
+			socket = io(API_URL, {
+				auth: {
+					token: await getAuthentication(),
+				},
+			});
+			socket.on("CartUpdated", async () => {
+				console.log("CartUpdated");
+				const count = await getCartCount();
+				setCartCount(count);
+			});
+		})();
+		return () => {
+			socket?.disconnect();
+		};
+	}, []);
 	return (
 		<Link href="/cart" className="relative">
 			{cartCount > 0 && (

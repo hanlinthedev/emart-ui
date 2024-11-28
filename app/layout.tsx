@@ -1,7 +1,6 @@
 import Header from "@/components/header";
 import ThemeProvider from "@/components/provider";
 import { Toaster } from "@/components/ui/toaster";
-import { getHeaders } from "@/util/fetch";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { getMe } from "./action";
@@ -19,13 +18,13 @@ export default async function RootLayout({
 	children: React.ReactNode;
 }>) {
 	const auth = await getMe();
-	const cookies = getHeaders();
+
 	return (
 		<html lang="en">
 			<body className={inter.className}>
 				<main className="w-full  max-w-[1200px] mx-auto ">
 					<ThemeProvider>
-						<Header auth={auth} cookies={cookies} />
+						<Header auth={auth} />
 						{children}
 						<Toaster />
 					</ThemeProvider>

@@ -9,7 +9,9 @@ const Header = ({ auth }: { auth: CurrentUser }) => {
 	return (
 		<nav className=" py-3 w-full flex justify-between items-center px-2 sm:px-4">
 			<div>
-				<h1 className="text-4xl italic">eMart</h1>
+				<h1 className="text-4xl italic">
+					<Link href="/">eMart</Link>
+				</h1>
 			</div>
 			<div className="flex items-center gap-2">
 				<ModeToggle rounded={auth?.id ? true : false} />

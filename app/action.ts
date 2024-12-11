@@ -134,6 +134,10 @@ export const getCartCount = async () => {
 	return get("cart/cartCount");
 };
 
+export const getOrders = async () => {
+	return get("order");
+};
+
 export const revalidate = (path: string) => {
 	revalidatePath(path);
 };

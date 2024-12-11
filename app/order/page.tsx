@@ -1,11 +1,14 @@
+import OrderPage from "@/components/OrderPage";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getAuth } from "../action";
+import { getAuth, getOrders } from "../action";
 
 type Props = {};
 
 const page = async (props: Props) => {
 	const user = await getAuth();
+	const orders = await getOrders();
+	console.log(orders);
 	return (
 		<Tabs defaultValue="pending" className="w-full px-2 sm:px-4">
 			<div className="text-2xl font-semibold mt-4">My Orders</div>
@@ -23,13 +26,19 @@ const page = async (props: Props) => {
 				</TabsTrigger>
 			</TabsList>
 			<TabsContent value="pending">
-				<div className="py-6">pending</div>
+				<div className="py-6">
+					<OrderPage order={orders} status="pending" />
+				</div>
 			</TabsContent>
 			<TabsContent value="shipping">
-				<div className="py-6">shipping</div>
+				<div className="py-6">
+					<OrderPage order={orders} status="shipping" />
+				</div>
 			</TabsContent>
 			<TabsContent value="completed">
-				<div className="py-6">completed</div>
+				<div className="py-6">
+					<OrderPage order={orders} status="completed" />
+				</div>
 			</TabsContent>
 		</Tabs>
 	);

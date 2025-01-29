@@ -1,4 +1,4 @@
-import { getCartItems } from "@/app/action";
+import { getCartItems } from "@/app/cart/action";
 import CartItemCards from "@/components/CartItemCards";
 import CheckoutDialog from "@/components/CheckoutDialog";
 import { CartItem } from "../../lib/type";

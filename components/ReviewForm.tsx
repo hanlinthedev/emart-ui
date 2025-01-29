@@ -1,5 +1,6 @@
 "use client";
-import { getAuth, setProductReview } from "@/app/action";
+import { getAuth } from "@/app/action";
+import { setProductReview } from "@/app/product/action";
 import { useSubmit } from "@/hooks/useSubmit";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { usePathname } from "next/navigation";

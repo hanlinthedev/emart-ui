@@ -1,5 +1,5 @@
 "use client";
-import { addToCart } from "@/app/action";
+import { addToCart } from "@/app/cart/action";
 import { useToast } from "@/hooks/use-toast";
 import { useSubmit } from "@/hooks/useSubmit";
 import { CircleMinus, CirclePlus } from "lucide-react";

@@ -1,9 +1,13 @@
+import {
+	getCategories,
+	getProducts,
+	getTotalProducts,
+} from "@/app/product/action";
 import Category from "@/components/Category";
 import CustomPagination from "@/components/pagination";
 import ProductCard from "@/components/product-card";
 import SearchBar from "@/components/search-bar";
 import { Product } from "@/lib/type";
-import { getCategories, getProducts, getTotalProducts } from "../../../action";
 
 export function generateStaticParams() {
 	const totalProducts = getTotalProducts();
@@ -12,7 +16,7 @@ export function generateStaticParams() {
 	const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
 	return pages.map((page) => ({ page: page.toString() }));
 }
-// export const dynamic = "force-static";
+
 export const revalidate = 0;
 export default async function Home({
 	params: { page },
@@ -39,7 +43,6 @@ export default async function Home({
 		<div className="min-h-screen ">
 			<div className="flex flex-col sm:flex-row-reverse gap-2 justify-between p-4">
 				<SearchBar />
-				{/* <Sort /> */}
 			</div>
 			<Category categories={categories} />
 			<div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-4 ">

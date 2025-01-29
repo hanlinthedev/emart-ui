@@ -1,5 +1,6 @@
 "use client";
-import { getAuthentication, getCartCount } from "@/app/action";
+import { getAuth } from "@/app/action";
+import { getCartCount } from "@/app/cart/action";
 import { Badge } from "@/components/ui/badge";
 import { API_URL } from "@/constants";
 import { ShoppingCart } from "lucide-react";
@@ -18,11 +19,11 @@ const CartComponent = ({ cartItemsCount }: Props) => {
 		(async () => {
 			socket = io(API_URL, {
 				auth: {
-					token: await getAuthentication(),
+					token: await getAuth(),
 				},
 			});
+
 			socket.on("CartUpdated", async () => {
-				console.log("CartUpdated");
 				const count = await getCartCount();
 				setCartCount(count);
 			});

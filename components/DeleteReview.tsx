@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteReview } from "@/app/action";
+import { deleteReview } from "@/app/product/action";
 import { useSubmit } from "@/hooks/useSubmit";
 import { Trash } from "lucide-react";
 import { Button } from "./ui/button";

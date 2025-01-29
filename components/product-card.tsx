@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import StarRating from "./star-rating";
 import { Button } from "./ui/button";
+
 export default function ProductCard({ product }: { product: Product }) {
 	return (
 		<AspectRatio ratio={3 / 4} className="relative">

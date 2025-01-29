@@ -1,5 +1,6 @@
 "use client";
-import { checkoutCart, checkoutWithStripe } from "@/app/action";
+
+import { checkoutCart, checkoutWithStripe } from "@/app/checkout/action";
 import getStripe from "@/app/checkout/stripe";
 import { useToast } from "@/hooks/use-toast";
 import { useSubmit } from "@/hooks/useSubmit";

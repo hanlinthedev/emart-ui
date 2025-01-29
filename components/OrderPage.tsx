@@ -1,4 +1,5 @@
 import OrderCard from "./OrderCard";
+
 const OrderPage = ({ order, status }: { order: any; status: string }) => {
 	const filteredOrders = order.filter((order: any) => order.status === status);
 	return (

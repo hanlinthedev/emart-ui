@@ -1,5 +1,5 @@
 "use client";
-import { removeItemFromCart } from "@/app/action";
+import { removeItemFromCart } from "@/app/cart/action";
 import { CartItem } from "@/lib/type";
 import { Trash2 } from "lucide-react";
 import Image from "next/image";

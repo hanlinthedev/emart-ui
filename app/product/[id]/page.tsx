@@ -1,4 +1,3 @@
-import { getProductById } from "@/app/action";
 import AddToCart from "@/components/AddToCart";
 import ProductReview from "@/components/product-review";
 import ReviewForm from "@/components/ReviewForm";
@@ -9,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { API_URL } from "@/constants";
 import { Product } from "@/lib/type";
 import Image from "next/image";
+import { getProductById } from "../action";
 
 type Props = {};
 
